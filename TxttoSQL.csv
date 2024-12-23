@@ -1,0 +1,21 @@
+english_query,sql_query
+Show all employees who work in the 'Sales' department.,SELECT * FROM employees WHERE department = 'Sales';
+List all orders made in 2021.,SELECT * FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2021;
+Find the total number of customers.,SELECT COUNT(*) FROM customers;
+What is the average order amount?,SELECT AVG(total_amount) FROM orders;
+List all products that have 'laptop' in their name.,SELECT * FROM products WHERE name ILIKE '%laptop%';
+Show all orders made by customer ID 4.,SELECT * FROM orders WHERE customer_id = 4;
+Find all employees who joined before 2020.,SELECT * FROM employees WHERE join_date < '2020-01-01';
+What is the total sales amount by each employee?,"SELECT employee_id, SUM(total_amount) FROM orders GROUP BY employee_id;"
+List all customers who made an order last month.,SELECT * FROM customers WHERE customer_id IN (SELECT customer_id FROM orders WHERE order_date > CURRENT_DATE - INTERVAL '1 month');
+List the top 5 most expensive products.,SELECT * FROM products ORDER BY price DESC LIMIT 5;
+Insert a new employee into the employees table.,"INSERT INTO employees (name, join_date, department) VALUES ('John Doe', '2023-01-15', 'Engineering');"
+Update the department of employee ID 2 to 'Marketing'.,UPDATE employees SET department = 'Marketing' WHERE employee_id = 2;
+Delete the customer with ID 10.,DELETE FROM customers WHERE customer_id = 10;
+Show the total number of orders and the average total amount.,"SELECT COUNT(*), AVG(total_amount) FROM orders;"
+Show the employee name and total sales amount for each employee.,"SELECT employees.name, SUM(orders.total_amount) FROM employees JOIN orders ON employees.employee_id = orders.employee_id GROUP BY employees.name;"
+Find all employees who work in the 'HR' department and joined after 2021.,SELECT * FROM employees WHERE department = 'HR' AND join_date > '2021-01-01';
+List all customers who have placed more than 5 orders.,SELECT customers.name FROM customers JOIN orders ON customers.customer_id = orders.customer_id GROUP BY customers.name HAVING COUNT(orders.order_id) > 5;
+Show the name of the product with the highest price.,SELECT name FROM products ORDER BY price DESC LIMIT 1;
+Find all employees whose name starts with 'A'.,SELECT * FROM employees WHERE name LIKE 'A%';
+What is the sum of all order amounts placed by customer ID 7?,SELECT SUM(total_amount) FROM orders WHERE customer_id = 7;

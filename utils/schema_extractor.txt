@@ -1,0 +1,44 @@
+from sqlalchemy import create_engine, inspect
+from sentence_transformers import SentenceTransformer
+from utils.pgvector_client import collection
+
+# Create a connection to the PostgreSQL database
+DATABASE_URL = "postgresql://postgres:123@localhost:5432/sqltest"
+engine = create_engine(DATABASE_URL)
+
+
+def get_schema_info():
+    """Fetch table names and column information from PostgreSQL."""
+    inspector = inspect(engine)
+    schema_info = []
+
+    # Get all table names in the database
+    tables = inspector.get_table_names()
+
+    for table in tables:
+        # Get column names and types for each table
+        columns = inspector.get_columns(table)
+        column_details = ", ".join([f"{col['name']} ({col['type']})" for col in columns])
+        schema_info.append(f"Table: {table} - Columns: {column_details}")
+
+    return schema_info
+
+
+def embed_and_store_schema():
+    """Embed the schema information and store it in the vector database."""
+    schema_info = get_schema_info()
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+
+    # Create embeddings for the schema
+    embeddings = model.encode(schema_info)
+
+    # Store embeddings and schema info in the ChromaDB collection
+    for schema_text, embedding in zip(schema_info, embeddings):
+        collection.add(
+            documents=[schema_text],
+            embeddings=[embedding],
+            metadatas=[{"schema": schema_text}]
+        )
+
+    print("Schema embedded and stored successfully.")
+

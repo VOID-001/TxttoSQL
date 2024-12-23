@@ -1,0 +1,16 @@
+from fastapi import APIRouter, HTTPException
+from utils.pgvector_client import PGVectorClient
+
+clear_router = APIRouter()
+
+# Initialize PGVector Client
+pgvector_client = PGVectorClient("postgresql://postgres:password@localhost:5432/vector")
+
+@clear_router.delete("/clear-vectordb/")
+async def clear_vectordb():
+    try:
+        # Clear all embeddings from PGVector
+        pgvector_client.clear_embeddings()
+        return {"detail": "All data cleared from the vector database"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error clearing data: {str(e)}")

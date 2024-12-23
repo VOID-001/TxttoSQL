@@ -1,0 +1,36 @@
+from fastapi import APIRouter, HTTPException
+from transformers import T5ForConditionalGeneration, T5Tokenizer
+import os
+
+nlp_sql_router = APIRouter()
+
+# Load the fine-tuned model and tokenizer (ensure the path is correct)
+model_path = "./MySQL_t5_model"
+if not os.path.exists(model_path):
+    raise Exception(f"Model not found at {model_path}. Please run the training first.")
+
+model = T5ForConditionalGeneration.from_pretrained(model_path)
+tokenizer = T5Tokenizer.from_pretrained(model_path)
+
+# Hardcoded schema to be used in the model
+static_schema = "employees(employee_id, name, department, position, salary, bike_owned)"
+
+# Route for generating SQL query based on the natural language question
+@nlp_sql_router.post("/generate-sql/")
+async def generate_sql_query(question: str):
+    try:
+        # Combine schema and question
+        input_text = f"translate English to SQL based on the provided schema:\nSchema: {static_schema}\nQuestion: {question}"
+
+        # Preprocess the input question
+        inputs = tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
+
+        # Generate the output (SQL query)
+        outputs = model.generate(inputs, max_length=150, num_beams=5, early_stopping=True)
+
+        # Decode the output and return the SQL query
+        sql_query = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return {"sql_query": sql_query}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating SQL query: {str(e)}")
