@@ -1,16 +1,24 @@
 import psycopg2
 
-class PGVectorClient:
-    def __init__(self, database_url):
-        self.conn = psycopg2.connect(database_url)
-        self.cursor = self.conn.cursor()
+pgvector_client = None
 
-    def execute_query(self, query):
-        try:
-            self.cursor.execute(query)
-            return self.cursor.fetchall()
-        except Exception as e:
-            raise Exception(f"Query Execution Failed: {str(e)}")
+def initialize_pgvector_client(database_url):
+    global pgvector_client
+    pgvector_client = psycopg2.connect(database_url)
 
-    def close(self):
-        self.conn.close()
+def get_schema_metadata():
+    """Fetch schema metadata from the database."""
+    query = """
+    SELECT table_name, column_name, data_type
+    FROM information_schema.columns
+    WHERE table_schema = 'public';
+    """
+    cursor = pgvector_client.cursor()
+    cursor.execute(query)
+    return cursor.fetchall()
+
+def execute_sql_query(query):
+    """Execute a SQL query on the database."""
+    cursor = pgvector_client.cursor()
+    cursor.execute(query)
+    return cursor.fetchall()
