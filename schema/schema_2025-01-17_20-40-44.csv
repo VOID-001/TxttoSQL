@@ -1,0 +1,34 @@
+table_name,column_name,data_type
+customers,first_name,character varying
+bikes,category_id,integer
+bikes,bike_id,integer
+bikes,brand_id,integer
+bikes,color,character varying
+bikes,description,text
+order_items,bike_id,integer
+orders,customer_id,integer
+order_items,quantity,integer
+customers,phone,character varying
+categories,name,character varying
+brands,name,character varying
+order_items,order_item_id,integer
+bikes,stock_quantity,integer
+categories,category_id,integer
+brands,brand_id,integer
+customers,address,character varying
+orders,order_id,integer
+order_items,order_id,integer
+orders,status,character varying
+brands,founded_year,integer
+bikes,price,numeric
+categories,description,text
+customers,state,character varying
+brands,country,character varying
+orders,order_date,timestamp without time zone
+customers,zip_code,character varying
+customers,city,character varying
+customers,last_name,character varying
+customers,customer_id,integer
+order_items,price,numeric
+bikes,name,character varying
+customers,email,character varying
