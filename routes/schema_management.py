@@ -4,8 +4,8 @@ import io
 import os
 import pandas as pd
 from datetime import datetime
-from typing import Dict, List, Optional
-from pydantic import BaseModel, RootModel
+from typing import Dict, List
+from pydantic import BaseModel
 from utils.pgvector_client import get_schema_metadata
 
 
@@ -126,5 +126,3 @@ async def print_buffer():
 async def clear_buffer():
     schema_manager.clear_buffer()
     return {"detail": "Buffer cleared successfully"}
-
-#Find all customers who purchased  a Trek Domane SL 6 bike customers, bikes
