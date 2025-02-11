@@ -4,6 +4,8 @@ from routes.db_connection import db_connection_router
 from routes.schema_management import schema_management_router
 from routes.sql_execution import sql_execution_router
 from routes.api_key import api_key_router
+from routes.nlp_context import nlp_context_router
+from utils.token_counter import token_router
 
 app = FastAPI()
 security = HTTPBasic()
@@ -41,4 +43,14 @@ app.include_router(
     api_key_router,
     prefix="/api",
     dependencies=[Depends(verify_credentials)]
+)
+app.include_router(
+    nlp_context_router,
+    prefix="/api",
+    dependencies=[Depends(verify_credentials)]
+)
+app.include_router(
+    token_router,
+    prefix="/api",
+    tags=["tokens"]
 )
