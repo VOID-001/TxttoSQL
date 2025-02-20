@@ -1,0 +1,21 @@
+table_name,column_name,data_type
+products,name,character varying
+orders,product_id,integer
+suppliers,supplier_id,integer
+suppliers,phone_number,character varying
+categories,name,character varying
+products,color,character varying
+orders,customer_name,character varying
+suppliers,contact_email,character varying
+products,price,numeric
+categories,description,text
+orders,customer_email,character varying
+suppliers,name,character varying
+categories,category_id,integer
+products,stock_quantity,integer
+orders,quantity,integer
+products,category_id,integer
+orders,order_date,timestamp without time zone
+products,product_id,integer
+products,size,numeric
+orders,order_id,integer
