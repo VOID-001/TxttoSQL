@@ -16,7 +16,7 @@ class ChatGPTClient:
         try:
             logging.info("Initializing ChatGPT Client...")
             self.api_key = os.getenv("OPENAI_API_KEY",
-                                     "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")
+                                     "X")
             self.model = "gpt-4o-mini"
             self.client = OpenAI(api_key=self.api_key)
             self.max_retries = 3
